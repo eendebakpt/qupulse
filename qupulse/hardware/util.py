@@ -50,7 +50,7 @@ def find_positions(data: Sequence, to_find: Sequence) -> np.ndarray:
 
 
 def get_sample_times(waveforms: Union[Collection[Waveform], Waveform],
-                     sample_rate_in_GHz: TimeType, tolerance: float = 1e-10) -> Tuple[np.array, np.array]:
+                     sample_rate_in_GHz: TimeType, tolerance: float = 1e-10, return_time_array= True) -> Tuple[np.array, np.array]:
     """Calculates the sample times required for the longest waveform in waveforms and returns it together with an array
     of the lengths.
 
@@ -96,5 +96,8 @@ def get_sample_times(waveforms: Union[Collection[Waveform], Waveform],
 
     segment_lengths = np.asarray(segment_lengths, dtype=np.uint64)
     time_array = np.arange(np.max(segment_lengths)) / float(sample_rate_in_GHz)
+
+    if not return_time_array:
+           time_array = None
 
     return time_array, segment_lengths
