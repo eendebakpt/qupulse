@@ -28,6 +28,9 @@ from qupulse._program.waveforms import Waveform
 from qupulse.hardware.awgs.base import AWG, ChannelNotFoundException
 from qupulse.hardware.util import get_sample_times
 
+from qupulse.pulses.parameters import ConstantParameter
+from typing import Mapping
+
 def correct_sequence_v2(seqc,cores=[0,1,2,3]):
     #extract waves from a playWave command and return them as tuple
     def get_waves(line):
@@ -491,6 +494,15 @@ class HDAWGChannelGroup(AWG):
         """Number of marker channels"""
         return len(self._channels)  # Actually 2*len(self._channels) available.
 
+
+    def set_volatile_parameters(self, program_name: str, parameters: Mapping[str, ConstantParameter]):
+        new_register_values = self._program_manager.get_register_values_to_update_volatile_parameters(program_name,
+                                                                                                      parameters)
+        print(f'set_volatile_parameters: {new_register_values}')
+        #if self._current_program == program_name:
+        #    for register, value in new_register_values.items():
+        #        self.user_register(register, value)
+
     def upload(self, name: str,
                program: Loop,
                channels: Tuple[Optional[ChannelID], Optional[ChannelID]],
@@ -536,7 +548,8 @@ class HDAWGChannelGroup(AWG):
             raise HDAWGValueError('{} is already known on {}'.format(name, self.identifier))
 
         # Go to qupulse nanoseconds time base.
-        q_sample_rate = time_from_fraction(self.sample_rate, 10**9)
+        q_sample_rate = time_from_fraction(int(self.sample_rate), 10**9)
+        #q_sample_rate = float(self.sample_rate/ 10**9)
 
         # Adjust program to fit criteria.
         #print('before!!!!')

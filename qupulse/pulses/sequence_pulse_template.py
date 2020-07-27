@@ -25,7 +25,7 @@ __all__ = ["SequencePulseTemplate"]
 
 class SequencePulseTemplate(PulseTemplate, ParameterConstrainer, MeasurementDefiner):
     """A sequence of different PulseTemplates.
-    
+
     SequencePulseTemplate allows to group several
     PulseTemplates (subtemplates) into one larger sequence,
     i.e., when instantiating a pulse from a SequencePulseTemplate
@@ -75,7 +75,7 @@ class SequencePulseTemplate(PulseTemplate, ParameterConstrainer, MeasurementDefi
         defined_channels = self.__subtemplates[0].defined_channels
         for subtemplate in self.__subtemplates[1:]:
             if subtemplate.defined_channels != defined_channels:
-                raise ValueError('The subtemplates are defined for different channels')
+                raise ValueError('The subtemplates are defined for different channels {defined_channels} vs. {subtemplate.defined_channels}')
 
         if external_parameters:
             warnings.warn("external_parameters is an obsolete argument and will be removed in the future.",
