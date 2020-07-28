@@ -208,7 +208,7 @@ class TableWaveform(Waveform):
 
     @property
     def duration(self) -> TimeType:
-        return TimeType.from_float(self._table[-1].t)
+        return TimeType.from_float(self._table[-1].t, absolute_error=1e-10)
 
     def unsafe_sample(self,
                       channel: ChannelID,

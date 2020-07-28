@@ -92,9 +92,15 @@ def approximate_rational(x: Rational, abs_err: Rational, fraction_type: Type[Rat
     else:
         p, q = _approximate_int(alpha_num, d_num, den)
 
+    import gmpy2
+    if fraction_type==type(gmpy2.mpq()) :
+       return gmpy2.mpq(p+n*q, q)
     return fraction_type(p + n * q, q)
 
 
 def approximate_double(x: float, abs_err: float, fraction_type: Type[Rational]) -> Rational:
     """Return the fraction with the smallest denominator in (x - abs_err, x + abs_err)."""
+    import gmpy2
+    if fraction_type==type(gmpy2.mpq()) :
+      return approximate_rational( gmpy2.f2q(x), gmpy2.f2q(abs_err), fraction_type=fraction_type)
     return approximate_rational(fraction_type(x), fraction_type(abs_err), fraction_type=fraction_type)
