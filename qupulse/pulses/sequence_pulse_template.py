@@ -75,7 +75,7 @@ class SequencePulseTemplate(PulseTemplate, ParameterConstrainer, MeasurementDefi
         defined_channels = self.__subtemplates[0].defined_channels
         for subtemplate in self.__subtemplates[1:]:
             if subtemplate.defined_channels != defined_channels:
-                raise ValueError('The subtemplates are defined for different channels {defined_channels} vs. {subtemplate.defined_channels}')
+                raise ValueError(f'The subtemplates are defined for different channels {defined_channels} vs. {subtemplate.defined_channels}')
 
         if external_parameters:
             warnings.warn("external_parameters is an obsolete argument and will be removed in the future.",
